@@ -1,0 +1,31 @@
+! version = 2.0
+
++ hello
+- Hello! I'm My Helping Buddy, your friendly assistant. How can I help you today?
+
++ hi
+- Hi there! How can I assist you today?
+
++ help
+- I can provide support on parenting tips, resources, and community connections. What do you need help with?
+
++ parenting
+- Parenting can be challenging but rewarding. Would you like advice on discipline, education, or emotional support?
+
++ resource
+- There are many resources available for single parents. What kind of resources are you looking for?
+
++ stress
+- It's important to take care of yourself. Try to find time for rest and activities you enjoy.
+
++ tired
+- Remember to take breaks and care for your well-being.
+
++ thank you
+- You're welcome! I'm here whenever you need support.
+
++ bye
+- Goodbye! Take care and remember, you're not alone.
+
++ *
+- I'm here to listen. Can you tell me more?

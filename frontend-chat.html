@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chatbot Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f9f9f9;
+    }
+    #chat {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      height: 400px;
+      overflow-y: auto;
+      background: white;
+      margin-bottom: 1rem;
+    }
+    .message {
+      margin-bottom: 1rem;
+    }
+    .user {
+      font-weight: bold;
+      color: #007bff;
+    }
+    .bot {
+      font-weight: bold;
+      color: #28a745;
+    }
+    #inputForm {
+      display: flex;
+    }
+    #inputForm input[type="text"] {
+      flex-grow: 1;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    #inputForm button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #inputForm button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chatbot Demo</h1>
+  <div id="chat"></div>
+  <form id="inputForm">
+    <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off" required />
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('inputForm');
+    const input = document.getElementById('messageInput');
+
+    function appendMessage(text, sender) {
+      const div = document.createElement('div');
+      div.classList.add('message');
+      div.innerHTML = '<span class="' + sender + '">' + sender + ':</span> ' + text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+      appendMessage(message, 'User');
+      input.value = '';
+      input.disabled = true;
+
+      try {
+        const response = await fetch('http://localhost:5003/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        if (data.reply) {
+          appendMessage(data.reply, 'Bot');
+        } else {
+          appendMessage('No reply from chatbot.', 'Bot');
+        }
+      } catch (error) {
+        appendMessage('Error contacting chatbot.', 'Bot');
+      } finally {
+        input.disabled = false;
+        input.focus();
+      }
+    });
+  </script>
+</body>
+</html>
